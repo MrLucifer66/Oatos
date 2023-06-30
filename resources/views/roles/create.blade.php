@@ -1,0 +1,7 @@
+<x-app-layout>
+<div class="container mx-auto"> <div class="bg-white shadow-lg rounded-lg px-4 py-6"> <div class="text-lg font-semibold mb-4">Create Role</div> <form action="{{ route('roles.store') }}" method="POST"> @csrf <div class="mb-4"> <label for="name" class="block text-gray-700 font-medium mb-2">Name:</label> <input type="text" name="name" id="name" class="border rounded py-2 px-3 w-full" required> @error('name') <small class="text-red-500">{{ $message }}</small> @enderror </div> <div class="mb-4"> <label for="permissions" class="block text-gray-700 font-medium mb-2">Permissions:</label> <select name="permissions[]" id="permissions" class="form-multiselect block w-full mt-1 rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" multiple data-live-search="true" data-selected-text-format="count > 2"> @foreach($permissions as $permission) <option value="{{ $permission->id }}">{{ $permission->name }}</option> @endforeach </select> </div> <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Create Role</button> </form> </div> </div>
+@push('scripts')
+
+<script src="{{ asset('js/bootstrap-select.min.js') }}"></script>
+@endpush
+</x-app-layout>
