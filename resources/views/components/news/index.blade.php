@@ -27,7 +27,11 @@
                     </div>
                     <div class="prose max-w-full">{{ $item->content }}</div>
                     <div class="my-6">
-                      <img src="src="{{ $item->image_path }}" alt="{{ $item->title }}" class="w-full max-w-4xl mx-auto">
+                        @if($item->image)
+                        <img class="h-48 w-full object-cover md:w-48"
+                             src="{{ asset('storage/news/' . $item->image) }}"
+                             alt="{{ $item->title }}">
+                        @endif
                     </div>
                   </div>
                 </div>

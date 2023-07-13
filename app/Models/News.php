@@ -9,16 +9,17 @@ class News extends Model
 {
     use HasFactory;
 
-    protected $table = 'news';
+    protected $fillable = ['title', 'content', 'summary', 'image', 'published_at', 'region_id'];
 
-    protected $fillable = [
-        'title',
-        'content',
-        'summary',
-        'image',
-        'author_id',
-        'published_at'
-    ];
+    public function region()
+    {
+        return $this->belongsTo(Region::class);
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
+    }
 
     /**
      * Получить путь к изображению новости.

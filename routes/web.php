@@ -7,6 +7,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\CalenderController;
 use App\Http\Controllers\FullCalenderController;
+use App\Http\Controllers\CourseController;
 use App\Models\News;
 use Illuminate\Support\Facades\Http;
 use SimplePie\SimplePie;
@@ -33,6 +34,9 @@ Route::middleware([
     'verified'
 ])->group(function () {
     Route::get('/dashboard', function () { return view('dashboard'); })->name('dashboard');
+    Route::get('/courses/create', [CourseController::class, 'create'])->name('courses.create');
+    Route::get('/mycourse', [CourseController::class, 'index'])->name('courses.index');
+    Route::post('/courses', [CourseController::class, 'store'])->name('courses.store');
     Route::get('/news', [NewsController::class, 'index'])->name('news.index');
     Route::get('/news/create', [NewsController::class, 'create'])->name('news.create');
     Route::post('/news', [NewsController::class, 'store'])->name('news.store');
