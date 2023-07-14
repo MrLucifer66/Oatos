@@ -51,12 +51,59 @@
                     <div class="grid grid-cols-4 gap-4 mt-4">
                         <label for="tags" class="col-span-1 flex items-end justify-end font-bold text-gray-700">{{ __('Теги') }}</label>
                         <div class="col-span-3 flex items-center">
-                            <input id="tags" type="text" class="form-input rounded-md shadow-sm w-full @error('tags') border border-red-300 @enderror" name="tags" value="{{ old('tags') }}">
-                            @error('tags')
-                                <span class="text-red-600 px-2">{{ $message }}</span>
-                            @enderror
+                            <div id="tags-container" class="flex flex-wrap bg-gray-200 rounded-md p-2">
+                            </div>
+                            <input id="tags-input" type="text" class="form-input rounded-md shadow-sm ml-2" name="tags[]"  multiple>
+                            <input id="hidden-tags" type="hidden" name="hidden-tags">
                         </div>
                     </div>
+                    
+                    <script>
+                        const tagsContainer = document.getElementById("tags-container");
+                        const input = document.getElementById("tags-input");
+                        const hiddenTags = document.getElementById("hidden-tags");
+                        const tags = [];
+                        
+                        input.addEventListener("keydown", function(event) {
+                            if (event.key === "Enter" || event.key === ",") {
+                                event.preventDefault();
+                                
+                                const value = input.value.trim();
+                                
+                                if (value !== "") {
+                                    tags.push(value);
+                                    
+                                    const tag = document.createElement("div");
+                                    tag.classList.add("flex", "items-center", "bg-blue-500", "text-white", "text-sm", "rounded", "p-1", "mr-2", "mb-2");
+                                    tag.innerHTML = `
+                                        <span class="mr-1">${value}</span>
+                                        <button class="text-white font-bold text-sm focus:outline-none">×</button>
+                                    `;
+                                    
+                                    tagsContainer.appendChild(tag);
+                                    
+                                    input.value = "";
+                                    
+                                    hiddenTags.value = JSON.stringify(tags);
+                                }
+                            }
+                        });
+                        
+                        tagsContainer.addEventListener("click", function(event) {
+                            if (event.target.tagName === "BUTTON") {
+                                const tagValue = event.target.previousElementSibling.innerText;
+                                const index = tags.indexOf(tagValue);
+                                
+                                if (index !== -1) {
+                                    tags.splice(index, 1);
+                                }
+                                
+                                event.target.closest("div").remove();
+                                
+                                hiddenTags.value = JSON.stringify(tags);
+                            }
+                        });
+                    </script>
     
                     <div class="flex items-center justify-end mt-4">
                         <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">

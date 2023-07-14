@@ -1,5 +1,5 @@
 <div class="form-group">
-    <label for="user_id">User</label>
+    <label for="user_id">Пользователь</label>
     <input type="text" class="form-control" id="user_id" name="user_id">
     <div id="userList"></div>
 </div>

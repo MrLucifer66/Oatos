@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\News;
 use App\Models\Tag;
 
+
 class NewsController extends Controller
 {
     public function index()
@@ -16,6 +17,14 @@ class NewsController extends Controller
 
         return view('news.index', compact('news'));
     }
+    public function welcome()
+{
+    $news = News::orderByDesc('created_at')
+        ->latest()
+        ->paginate(10);
+
+    return view('welcome', compact('news'));
+}
 
     public function show($id)
     {
@@ -30,31 +39,51 @@ class NewsController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'required|string',
-            'summary' => 'required|string',
-            'image' => 'nullable|image|max:2048',
-        ]);
+{
+    $validatedData = $request->validate([
+        'title' => 'required|string|max:255',
+        'content' => 'required|string',
+        'summary' => 'required|string',
+        'image' => 'nullable|image|max:2048',
+        'tags' => 'array',
+    ]);
 
-        $news = new News;
+    $news = new News;
 
-        $news->title = $validatedData['title'];
-        $news->content = $validatedData['content'];
-        $news->summary = $validatedData['summary'];
+    $news->title = $validatedData['title'];
+    $news->content = $validatedData['content'];
+    $news->summary = $validatedData['summary'];
+    $news->region = 'federation';
 
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('images'), $imageName);
-            $news->image = $imageName;
-        }
-
-        $news->save();
-
-        return redirect()->route('news.show', $news->id);
+    if ($request->hasFile('image')) {
+        $image = $request->file('image');
+        $imageName = time() . '.' . $image->getClientOriginalExtension();
+        $image->move(public_path('images'), $imageName);
+        $news->image = $imageName;
     }
+
+    $news->save();
+
+    $tags = $request->input('tags');
+    $hiddenTags = $request->input('hidden-tags');
+    $tags = json_decode($hiddenTags, true);
+    
+    if ($tags) {
+        $tagIds = [];
+        
+        foreach ($tags as $tagName) {
+            if (!empty($tagName)) {
+                $tag = Tag::firstOrCreate(['name' => $tagName]);
+                $tagIds[] = $tag->id;
+            }
+        }
+        
+        $news->tags()->sync($tagIds);
+    }
+    
+
+    return redirect()->route('news.show', $news->id);
+}
 
     public function edit($id)
     {
@@ -64,29 +93,44 @@ class NewsController extends Controller
     }
 
     public function update(Request $request, $id)
-    {
-        $validatedData = $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'required|string',
-            'summary' => 'required|string',
-            'image' => 'nullable|image|max:2048',
-        ]);
+{
+    $validatedData = $request->validate([
+        'title' => 'required|string|max:255',
+        'content' => 'required|string',
+        'summary' => 'required|string',
+        'image' => 'nullable|image|max:2048',
+        'tags' => 'array',
+    ]);
 
-        $news = News::findOrFail($id);
+    $news = News::findOrFail($id);
 
-        $news->fill($validatedData);
+    $news->fill($validatedData);
+    $news->region = 'federation';
 
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('images'), $imageName);
-            $news->image = $imageName;
-        }
-
-        $news->save();
-
-        return redirect()->route('news.show', $news->id);
+    if ($request->hasFile('image')) {
+        $image = $request->file('image');
+        $imageName = time() . '.' . $image->getClientOriginalExtension();
+        $image->move(public_path('images'), $imageName);
+        $news->image = $imageName;
     }
+
+    $news->save();
+
+    $tags = $request->input('tags');
+
+    if ($tags) {
+        $tagIds = [];
+        foreach ($tags as $tagName) {
+            $tag = Tag::firstOrCreate(['name' => $tagName]);
+            $tagIds[] = $tag->id;
+        }
+        $news->tags()->sync($tagIds);
+    } else {
+        $news->tags()->detach();
+    }
+
+    return redirect()->route('news.show', $news->id);
+}
 
     public function destroy($id)
     {

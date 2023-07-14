@@ -23,10 +23,10 @@ use SimplePie\SimplePie;
 */
 Route::get('/parse', [App\Http\Controllers\ParserController::class, 'index']);
 
-Route::get('/', function () {
+Route::get('/', [NewsController::class, 'welcome'], function () {
     return view('welcome');
 });
-
+Route::get('welcome/news/{id}', [NewsController::class, 'show'])->name('welcome.news.show');
 
 Route::middleware([
     'auth:sanctum',
@@ -41,6 +41,7 @@ Route::middleware([
     Route::get('/news/create', [NewsController::class, 'create'])->name('news.create');
     Route::post('/news', [NewsController::class, 'store'])->name('news.store');
     Route::get('/news/{id}', [NewsController::class, 'show'])->name('news.show');
+
     Route::get('/news/{id}/edit', [NewsController::class, 'edit'])->name('news.edit');
     Route::put('/news/{id}', [NewsController::class, 'update'])->name('news.update');
     Route::delete('/news/{id}', [NewsController::class, 'destroy'])->name('news.destroy');

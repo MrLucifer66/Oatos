@@ -77,11 +77,22 @@
                   <li>
                     <a href="#" class="text-gray-300 hover:text-white px-3 py-2">Новости</a>
                   </li>
+                  <button class="relative text-gray-300 hover:text-white px-0 py-0">
+                    Прямая трансляция
+                    <div class="absolute top-0 right-0 h-2 w-2 bg-green-500 rounded-full animate-ping"></div>
+                    <div class="absolute top-0 right-0 h-2 w-2 bg-green-500 rounded-full"></div>
+                  </button>
                 </ul>
               </div>
              </div>
           </div>
         </nav>
+        <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8"> 
+          <div class="relative flex items-center justify-between">
+            @livewire('news-list')
+          </div>
+        </div>
+            @livewireScripts
     </body>
 
 
