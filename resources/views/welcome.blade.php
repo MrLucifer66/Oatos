@@ -21,6 +21,28 @@
     </head>
     
     <body>
+      <div class="relative isolate flex items-center gap-x-6 overflow-hidden bg-gray-50 px-6 py-2.5 sm:px-3.5 sm:before:flex-1">
+        <div class="absolute left-[max(-7rem,calc(50%-52rem))] top-1/2 -z-10 -translate-y-1/2 transform-gpu blur-2xl" aria-hidden="true">
+          <div class="aspect-[577/310] w-[36.0625rem] bg-gradient-to-r from-gray-300 to-gray-900 opacity-30" style="clip-path: polygon(74.8% 41.9%, 97.2% 73.2%, 100% 34.9%, 92.5% 0.4%, 87.5% 0%, 75% 28.6%, 58.5% 54.6%, 50.1% 56.8%, 46.9% 44%, 48.3% 17.4%, 24.7% 53.9%, 0% 27.9%, 11.9% 74.2%, 24.9% 54.1%, 68.6% 100%, 74.8% 41.9%)"></div>
+        </div>
+        <div class="absolute left-[max(45rem,calc(50%+8rem))] top-1/2 -z-10 -translate-y-1/2 transform-gpu blur-2xl" aria-hidden="true">
+          <div class="aspect-[577/310] w-[36.0625rem] bg-gradient-to-r from-gray-300 to-gray-900 opacity-30" style="clip-path: polygon(74.8% 41.9%, 97.2% 73.2%, 100% 34.9%, 92.5% 0.4%, 87.5% 0%, 75% 28.6%, 58.5% 54.6%, 50.1% 56.8%, 46.9% 44%, 48.3% 17.4%, 24.7% 53.9%, 0% 27.9%, 11.9% 74.2%, 24.9% 54.1%, 68.6% 100%, 74.8% 41.9%)"></div>
+        </div>
+        <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
+          <p class="text-sm leading-6 text-gray-900">
+            <strong class="font-semibold">ОАТОС Образовательный </strong><svg viewBox="0 0 2 2" class="mx-2 inline h-0.5 w-0.5 fill-current" aria-hidden="true"><circle cx="1" cy="1" r="1" /></svg>Join us in Denver from June 7 – 9 to see what’s coming next.
+          </p>
+          <a href="#" class="flex-none rounded-full bg-gray-900 px-3.5 py-1 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900">Вступить <span aria-hidden="true">&rarr;</span></a>
+        </div>
+        <div class="flex flex-1 justify-end">
+          <button type="button" class="-m-3 p-3 focus-visible:outline-offset-[-4px]">
+            <span class="sr-only">Dismiss</span>
+            <svg class="h-5 w-5 text-gray-900" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
+            </svg>
+          </button>
+        </div>
+      </div>
         <nav class="bg-gray-900">
              <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8"> 
                 <div class="relative flex items-center justify-between h-16">
@@ -35,7 +57,14 @@
                             ОАТОС
                         </a> 
                     </div>
-
+                    <div class="relative flex items-center">
+                      <input type="text" placeholder="Поиск" class="px-4 py-2 rounded-l-full text-gray-700 bg-gray-200 focus:outline-none focus:bg-white focus:text-gray-900 rounded-l-full mx-auto" />
+                      <span class="absolute inset-y-0 right-0 flex items-center px-4">
+                          <svg class="w-6 h-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l5-5m0 0l-5-5m5 5H4" />
+                          </svg>
+                      </span>
+                  </div>
                     <div class="sm:flex sm:items-center sm:ml-6"> 
                         @if (Route::has('login')) 
                         <div class="ml-3 relative"> 
@@ -52,46 +81,509 @@
                 </div>
             </div>
         </nav>
+        <div class="bg-gray-800 text-white py-2 px-4 bottom-0 left-0 w-full z-20">
+          <div class="marquee">
+            <marquee>{{$marqueeText}}</marquee>
+          </div>
+        </div>
         <nav class="bg-gray-800">
-            <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8"> 
+            <div class="justefy-center"> 
              <div class="relative flex items-center justify-between h-10">
               <div class="hidden md:block">
                 <ul class="flex">
                   <li>
-                    <a href="/" class="text-gray-300 hover:text-white px-3 py-2">Об Ассоциации</a>
+                  <div class="flex justify-center">
+                      <div
+                          x-data="{
+                              open: false,
+                              toggle() {
+                                  if (this.open) {
+                                      return this.close()
+                                  }
+                   
+                                  this.$refs.button.focus()
+                   
+                                  this.open = true
+                              },
+                              close(focusAfter) {
+                                  if (! this.open) return
+                   
+                                  this.open = false
+                   
+                                  focusAfter && focusAfter.focus()
+                              }
+                          }"
+                          x-on:keydown.escape.prevent.stop="close($refs.button)"
+                          x-on:focusin.window="! $refs.panel.contains($event.target) && close()"
+                          x-id="['dropdown-button']"
+                          class="relative">
+                          <!-- Button -->
+                          <button
+                              x-ref="button"
+                              x-on:click="toggle()"
+                              :aria-expanded="open"
+                              :aria-controls="$id('dropdown-button')"
+                              type="button"
+                              class="flex items-center text-gray-300 hover:text-white px-3 py-2"
+                          >
+                              Об ассоциации
+                   
+                          </button>
+                   
+                          <!-- Panel -->
+                          <div
+                              x-ref="panel"
+                              x-show="open"
+                              x-transition.origin.top.left
+                              x-on:click.outside="close($refs.button)"
+                              :id="$id('dropdown-button')"
+                              style="display: none;"
+                              class="absolute left-0 mt-2 w-40 rounded-md bg-white shadow-md"
+                          >
+                              <a href="#" class="flex items-center gap-2 w-full first-of-type:rounded-t-md last-of-type:rounded-b-md px-4 py-2.5 text-left text-sm hover:bg-gray-50 disabled:text-gray-500">
+                                Что такое ТОС?
+                              </a>
+                   
+                              <a href="#" class="flex items-center gap-2 w-full first-of-type:rounded-t-md last-of-type:rounded-b-md px-4 py-2.5 text-left text-sm hover:bg-gray-50 disabled:text-gray-500">
+                                История ОАТОС
+                              </a>
+                              <a href="#" class="flex items-center gap-2 w-full first-of-type:rounded-t-md last-of-type:rounded-b-md px-4 py-2.5 text-left text-sm hover:bg-gray-50 disabled:text-gray-500">
+                                Цели и задачи
+                              </a>
+                              <a href="#" class="flex items-center gap-2 w-full first-of-type:rounded-t-md last-of-type:rounded-b-md px-4 py-2.5 text-left text-sm hover:bg-gray-50 disabled:text-gray-500">
+                                Официальные документы
+                              </a>
+                              <a href="#" class="flex items-center gap-2 w-full first-of-type:rounded-t-md last-of-type:rounded-b-md px-4 py-2.5 text-left text-sm hover:bg-gray-50 disabled:text-gray-500">
+                                Наши проекты
+                              </a>
+                              <a href="#" class="flex items-center gap-2 w-full first-of-type:rounded-t-md last-of-type:rounded-b-md px-4 py-2.5 text-left text-sm hover:bg-gray-50 disabled:text-gray-500">
+                                Наши партнёры
+                              </a>
+                              <a href="#" class="flex items-center gap-2 w-full first-of-type:rounded-t-md last-of-type:rounded-b-md px-4 py-2.5 text-left text-sm hover:bg-gray-50 disabled:text-gray-500">
+                                Календарь событий
+                              </a>
+                              <a href="#" class="flex items-center gap-2 w-full first-of-type:rounded-t-md last-of-type:rounded-b-md px-4 py-2.5 text-left text-sm hover:bg-gray-50 disabled:text-gray-500">
+                                СМИ о нас
+                              </a>
+                          </div>
+                      </div>
+                  </div>
                   </li>
-                  <li class="relative">
-                    <a href="#" class="text-gray-300 hover:text-white px-3 py-2">Органы управления</a>
-                    <div class="absolute z-10 hidden bg-gray-700 py-2">
-                      <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:text-white">Совет директоров</a>
-                      <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:text-white">Ревизионная комиссия</a>
-                      <a href="#" class="block px-4 py-2 text-sm text-gray-300 hover:text-white">Исполнительный орган</a>
+                  <li>
+                    <div class="flex justify-center">
+                        <div
+                            x-data="{
+                                open: false,
+                                toggle() {
+                                    if (this.open) {
+                                        return this.close()
+                                    }
+                     
+                                    this.$refs.button.focus()
+                     
+                                    this.open = true
+                                },
+                                close(focusAfter) {
+                                    if (! this.open) return
+                     
+                                    this.open = false
+                     
+                                    focusAfter && focusAfter.focus()
+                                }
+                            }"
+                            x-on:keydown.escape.prevent.stop="close($refs.button)"
+                            x-on:focusin.window="! $refs.panel.contains($event.target) && close()"
+                            x-id="['dropdown-button']"
+                            class="relative">
+                            <!-- Button -->
+                            <button
+                                x-ref="button"
+                                x-on:click="toggle()"
+                                :aria-expanded="open"
+                                :aria-controls="$id('dropdown-button')"
+                                type="button"
+                                class="flex items-center text-gray-300 hover:text-white px-3 py-2"
+                            >
+                              Органы управления
+                     
+                            </button>
+                     
+                            <!-- Panel -->
+                            <div
+                                x-ref="panel"
+                                x-show="open"
+                                x-transition.origin.top.left
+                                x-on:click.outside="close($refs.button)"
+                                :id="$id('dropdown-button')"
+                                style="display: none;"
+                                class="absolute left-0 mt-2 w-40 rounded-md bg-white shadow-md"
+                            >
+                                <a href="#" class="flex items-center gap-2 w-full first-of-type:rounded-t-md last-of-type:rounded-b-md px-4 py-2.5 text-left text-sm hover:bg-gray-50 disabled:text-gray-500">
+                                  Общее собрание
+                                </a>
+                     
+                                <a href="#" class="flex items-center gap-2 w-full first-of-type:rounded-t-md last-of-type:rounded-b-md px-4 py-2.5 text-left text-sm hover:bg-gray-50 disabled:text-gray-500">
+                                  Правление
+                                </a>
+                                <a href="#" class="flex items-center gap-2 w-full first-of-type:rounded-t-md last-of-type:rounded-b-md px-4 py-2.5 text-left text-sm hover:bg-gray-50 disabled:text-gray-500">
+                                  Ревизионная комиссия
+                                </a>
+                                <a href="#" class="flex items-center gap-2 w-full first-of-type:rounded-t-md last-of-type:rounded-b-md px-4 py-2.5 text-left text-sm hover:bg-gray-50 disabled:text-gray-500">
+                                  Дирекция
+                                </a>
+                                <a href="#" class="flex items-center gap-2 w-full first-of-type:rounded-t-md last-of-type:rounded-b-md px-4 py-2.5 text-left text-sm hover:bg-gray-50 disabled:text-gray-500">
+                                  ФЭС при ОАТОС
+                                </a>
+                            </div>
+                        </div>
                     </div>
                   </li>
                   <li>
-                    <a href="#" class="text-gray-300 hover:text-white px-3 py-2">Стратегия ТОС - 2030</a>
+                      <div class="flex justify-center">
+                          <div
+                              x-data="{
+                                  open: false,
+                                  toggle() {
+                                      if (this.open) {
+                                          return this.close()
+                                      }
+                       
+                                      this.$refs.button.focus()
+                       
+                                      this.open = true
+                                  },
+                                  close(focusAfter) {
+                                      if (! this.open) return
+                       
+                                      this.open = false
+                       
+                                      focusAfter && focusAfter.focus()
+                                  }
+                              }"
+                              x-on:keydown.escape.prevent.stop="close($refs.button)"
+                              x-on:focusin.window="! $refs.panel.contains($event.target) && close()"
+                              x-id="['dropdown-button']"
+                              class="relative">
+                              <!-- Button -->
+                              <button
+                                  x-ref="button"
+                                  x-on:click="toggle()"
+                                  :aria-expanded="open"
+                                  :aria-controls="$id('dropdown-button')"
+                                  type="button"
+                                  class="flex items-center text-gray-300 hover:text-white px-3 py-2"
+                              >
+                                Семья ТОС
+                       
+                              </button>
+                       
+                              <!-- Panel -->
+                              <div
+                                  x-ref="panel"
+                                  x-show="open"
+                                  x-transition.origin.top.left
+                                  x-on:click.outside="close($refs.button)"
+                                  :id="$id('dropdown-button')"
+                                  style="display: none;"
+                                  class="absolute left-0 mt-2 w-40 rounded-md bg-white shadow-md"
+                              >
+                                  <a href="#" class="flex items-center gap-2 w-full first-of-type:rounded-t-md last-of-type:rounded-b-md px-4 py-2.5 text-left text-sm hover:bg-gray-50 disabled:text-gray-500">
+                                    Создать ТОС
+                                  </a>
+                       
+                                  <a href="#" class="flex items-center gap-2 w-full first-of-type:rounded-t-md last-of-type:rounded-b-md px-4 py-2.5 text-left text-sm hover:bg-gray-50 disabled:text-gray-500">
+                                    Вступить в ОАТОС
+                                  </a>
+                                  <a href="#" class="flex items-center gap-2 w-full first-of-type:rounded-t-md last-of-type:rounded-b-md px-4 py-2.5 text-left text-sm hover:bg-gray-50 disabled:text-gray-500">
+                                    Лучшая практика ТОС
+                                  </a>
+                                  <a href="#" class="flex items-center gap-2 w-full first-of-type:rounded-t-md last-of-type:rounded-b-md px-4 py-2.5 text-left text-sm hover:bg-gray-50 disabled:text-gray-500">
+                                    ТОС - консультант
+                                  </a>
+                                  <a href="#" class="flex items-center gap-2 w-full first-of-type:rounded-t-md last-of-type:rounded-b-md px-4 py-2.5 text-left text-sm hover:bg-gray-50 disabled:text-gray-500">
+                                    ТОС - библиотека
+                                  </a>
+                                  <a href="#" class="flex items-center gap-2 w-full first-of-type:rounded-t-md last-of-type:rounded-b-md px-4 py-2.5 text-left text-sm hover:bg-gray-50 disabled:text-gray-500">
+                                    ТОС- образование
+                                  </a>
+                                  <a href="#" class="flex items-center gap-2 w-full first-of-type:rounded-t-md last-of-type:rounded-b-md px-4 py-2.5 text-left text-sm hover:bg-gray-50 disabled:text-gray-500">
+                                    ТОС - проект
+                                  </a>
+                                  <a href="#" class="flex items-center gap-2 w-full first-of-type:rounded-t-md last-of-type:rounded-b-md px-4 py-2.5 text-left text-sm hover:bg-gray-50 disabled:text-gray-500">
+                                    ТОС - сайт
+                                  </a>
+                                  <a href="#" class="flex items-center gap-2 w-full first-of-type:rounded-t-md last-of-type:rounded-b-md px-4 py-2.5 text-left text-sm hover:bg-gray-50 disabled:text-gray-500">
+                                    ТОС - финансы
+                                  </a>
+                              </div>
+                          </div>
+                      </div>
+                      </li>
+                  <li>
+                    <div class="flex justify-center">
+                      <div
+                          x-data="{
+                              open: false,
+                              toggle() {
+                                  if (this.open) {
+                                      return this.close()
+                                  }
+                   
+                                  this.$refs.button.focus()
+                   
+                                  this.open = true
+                              },
+                              close(focusAfter) {
+                                  if (! this.open) return
+                   
+                                  this.open = false
+                   
+                                  focusAfter && focusAfter.focus()
+                              }
+                          }"
+                          x-on:keydown.escape.prevent.stop="close($refs.button)"
+                          x-on:focusin.window="! $refs.panel.contains($event.target) && close()"
+                          x-id="['dropdown-button']"
+                          class="relative">
+                          <!-- Button -->
+                          <button
+                              x-ref="button"
+                              x-on:click="toggle()"
+                              :aria-expanded="open"
+                              :aria-controls="$id('dropdown-button')"
+                              type="button"
+                              class="flex items-center text-gray-300 hover:text-white px-3 py-2"
+                          >
+                            Стратегия ТОС - 2030
+                   
+                          </button>
+                      </div>
+                    </div>
+                    
                   </li>
                   <li>
-                    <a href="#" class="text-gray-300 hover:text-white px-3 py-2">Сведения об образовательной организации</a>
+                    <div class="flex justify-center">
+                      <div
+                          x-data="{
+                              open: false,
+                              toggle() {
+                                  if (this.open) {
+                                      return this.close()
+                                  }
+                   
+                                  this.$refs.button.focus()
+                   
+                                  this.open = true
+                              },
+                              close(focusAfter) {
+                                  if (! this.open) return
+                   
+                                  this.open = false
+                   
+                                  focusAfter && focusAfter.focus()
+                              }
+                          }"
+                          x-on:keydown.escape.prevent.stop="close($refs.button)"
+                          x-on:focusin.window="! $refs.panel.contains($event.target) && close()"
+                          x-id="['dropdown-button']"
+                          class="relative">
+                          <!-- Button -->
+                          <button
+                              x-ref="button"
+                              x-on:click="toggle()"
+                              :aria-expanded="open"
+                              :aria-controls="$id('dropdown-button')"
+                              type="button"
+                              class="flex items-center text-gray-300 hover:text-white px-3 py-2"
+                          >
+                            Сведения об образовательной организации
+                   
+                          </button>
+                      </div>
+                    </div>
+                    
                   </li>
                   <li>
-                    <a href="#" class="text-gray-300 hover:text-white px-3 py-2">Новости</a>
+                    <div class="flex justify-center">
+                      <div
+                          x-data="{
+                              open: false,
+                              toggle() {
+                                  if (this.open) {
+                                      return this.close()
+                                  }
+                   
+                                  this.$refs.button.focus()
+                   
+                                  this.open = true
+                              },
+                              close(focusAfter) {
+                                  if (! this.open) return
+                   
+                                  this.open = false
+                   
+                                  focusAfter && focusAfter.focus()
+                              }
+                          }"
+                          x-on:keydown.escape.prevent.stop="close($refs.button)"
+                          x-on:focusin.window="! $refs.panel.contains($event.target) && close()"
+                          x-id="['dropdown-button']"
+                          class="relative">
+                          <!-- Button -->
+                          <button
+                              x-ref="button"
+                              x-on:click="toggle()"
+                              :aria-expanded="open"
+                              :aria-controls="$id('dropdown-button')"
+                              type="button"
+                              class="flex items-center text-gray-300 hover:text-white px-3 py-2"
+                          >
+                            Новости
+                   
+                          </button>
+                      </div>
+                    </div>
+                    
                   </li>
-                  <button class="relative text-gray-300 hover:text-white px-0 py-0">
-                    Прямая трансляция
-                    <div class="absolute top-0 right-0 h-2 w-2 bg-green-500 rounded-full animate-ping"></div>
-                    <div class="absolute top-0 right-0 h-2 w-2 bg-green-500 rounded-full"></div>
-                  </button>
+                  <li>
+                    <div class="flex justify-center">
+                      <div
+                          x-data="{
+                              open: false,
+                              toggle() {
+                                  if (this.open) {
+                                      return this.close()
+                                  }
+                   
+                                  this.$refs.button.focus()
+                   
+                                  this.open = true
+                              },
+                              close(focusAfter) {
+                                  if (! this.open) return
+                   
+                                  this.open = false
+                   
+                                  focusAfter && focusAfter.focus()
+                              }
+                          }"
+                          x-on:keydown.escape.prevent.stop="close($refs.button)"
+                          x-on:focusin.window="! $refs.panel.contains($event.target) && close()"
+                          x-id="['dropdown-button']"
+                          class="relative">
+                          <!-- Button -->
+                          <button
+                              x-ref="button"
+                              x-on:click="toggle()"
+                              :aria-expanded="open"
+                              :aria-controls="$id('dropdown-button')"
+                              type="button"
+                              class="flex items-center text-gray-300 hover:text-white px-3 py-2"
+                          >
+                            Оплатить взносы
+                   
+                          </button>
+                      </div>
+                    </div>
+                    
+                  </li>
+                  <li>
+                    <div class="flex justify-center">
+                      <div
+                          x-data="{
+                              open: false,
+                              toggle() {
+                                  if (this.open) {
+                                      return this.close()
+                                  }
+                   
+                                  this.$refs.button.focus()
+                   
+                                  this.open = true
+                              },
+                              close(focusAfter) {
+                                  if (! this.open) return
+                   
+                                  this.open = false
+                   
+                                  focusAfter && focusAfter.focus()
+                              }
+                          }"
+                          x-on:keydown.escape.prevent.stop="close($refs.button)"
+                          x-on:focusin.window="! $refs.panel.contains($event.target) && close()"
+                          x-id="['dropdown-button']"
+                          class="relative">
+                          <!-- Button -->
+                          <button
+                              x-ref="button"
+                              x-on:click="toggle()"
+                              :aria-expanded="open"
+                              :aria-controls="$id('dropdown-button')"
+                              type="button"
+                              class="flex items-center text-gray-300 hover:text-white px-3 py-2"
+                          >
+                            Журнал "Муниципальная Россия"
+                   
+                          </button>
+                      </div>
+                    </div>
+                    
+                  </li>
+                  <li>
+                    <div class="flex justify-center">
+                      <div
+                          x-data="{
+                              open: false,
+                              toggle() {
+                                  if (this.open) {
+                                      return this.close()
+                                  }
+                   
+                                  this.$refs.button.focus()
+                   
+                                  this.open = true
+                              },
+                              close(focusAfter) {
+                                  if (! this.open) return
+                   
+                                  this.open = false
+                   
+                                  focusAfter && focusAfter.focus()
+                              }
+                          }"
+                          x-on:keydown.escape.prevent.stop="close($refs.button)"
+                          x-on:focusin.window="! $refs.panel.contains($event.target) && close()"
+                          x-id="['dropdown-button']"
+                          class="relative">
+                          <!-- Button -->
+                          <button
+                              x-ref="button"
+                              x-on:click="toggle()"
+                              :aria-expanded="open"
+                              :aria-controls="$id('dropdown-button')"
+                              type="button"
+                              class="flex items-center text-gray-300 hover:text-white px-3 py-2"
+                          >
+                            Контакты
+                   
+                          </button>
+                      </div>
+                    </div>
+                  </li>
                 </ul>
               </div>
              </div>
           </div>
         </nav>
-        <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8"> 
-          <div class="relative flex items-center justify-between">
-            @livewire('news-list')
+        
+        <div class="py-12">
+          <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+              <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+                @livewire('news-list')
+            </div>
           </div>
         </div>
+
             @livewireScripts
     </body>
 

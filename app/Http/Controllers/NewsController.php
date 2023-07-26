@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\News;
 use App\Models\Tag;
+use App\Models\Marquee;
 
 
 class NewsController extends Controller
@@ -19,11 +20,12 @@ class NewsController extends Controller
     }
     public function welcome()
 {
+    $marqueeText = Marquee::pluck('text')->first();
     $news = News::orderByDesc('created_at')
         ->latest()
         ->paginate(10);
 
-    return view('welcome', compact('news'));
+    return view('welcome', compact('news', 'marqueeText'));
 }
 
     public function show($id)
